@@ -1,7 +1,4 @@
 # app.R — Projeto Futebol Brasileiro Dash -------------------------------
-# Sua chave não deve ficar no código
-
-
 
 library(shiny)
 library(tidyverse)
