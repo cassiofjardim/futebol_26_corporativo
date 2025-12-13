@@ -62,3 +62,33 @@ Aplicação Shiny com tela de login e um painel multi-times inspirado em um “v
 - 🔌 Conectar uma base real de partidas e filtrar `dados` por clube.
 - 📈 Revisar KPIs e gráficos para refletir estatísticas de jogo (xG, finalizações, posse, PPDA).
 - 🧭 Incluir controles de período/campeonato e filtros por posição ou atleta.
+
+## ✅ Qualidade (testes e CI)
+Este repositório já inclui uma base de **testes automatizados** e **integração contínua** para dar mais segurança em refactors e evolução do app.
+
+- 🧪 Testes unitários e de módulos Shiny: `tests/testthat/`
+- ▶️ Runner de testes: `tests/testthat.R`
+- 🤖 Pipeline no GitHub Actions: `.github/workflows/r-tests.yml` (executa em `push` e `pull_request`)
+
+### Como rodar os testes localmente
+1) Instale o pacote de testes:
+   - `install.packages("testthat")`
+2) Rode na raiz do projeto:
+   - `Rscript -f tests/testthat.R`
+   - (alternativa) `testthat::test_dir("tests/testthat")`
+
+### Badge do CI (opcional)
+Após publicar no GitHub, você pode colocar um badge no topo do README:
+- `![R tests](https://github.com/<owner>/<repo>/actions/workflows/r-tests.yml/badge.svg)`
+
+## 🧱 Boas práticas já adotadas
+- Estrutura modular com `R/mod_*.R` (UI/Server separados por domínio).
+- Separação de helpers (`R/helpers_*.R`) para reutilização e testes.
+- README com instruções claras de execução e organização de pastas.
+
+## 🗺️ Roadmap de profissionalização
+- 📦 Reprodutibilidade de pacotes com `renv` (commit do `renv.lock`).
+- 🔐 Remover credenciais hardcoded e usar `.Renviron`/Secrets no deploy.
+- 🧹 Padronização: `styler` (formatação) + `lintr` (lint) no CI.
+- 🧪 Aumentar cobertura de testes para regras de negócio (KPIs reais, filtros e validações).
+- 🚦 Checks em PR: status checks obrigatórios (Actions) e revisão por pares.
