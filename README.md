@@ -1,91 +1,65 @@
 # Dashboard de Futebol (Shiny)
 
-App em Shiny com tela de login e um painel multi-times, no clima de um “vestiário de dados” do futebol. Ele já está estruturado para receber uma base real de partidas, mas por enquanto roda com uma base fictícia (RH) só para validar layout, navegação e geração de relatórios.
+Este repositório é um app em Shiny com login e um dashboard “por time” (abas). A interface e os módulos já estão montados, mas os dados ainda são de exemplo (`data/base_rh.csv`) — a ideia é trocar isso por uma base real de partidas quando você estiver pronto.
 
 ## Navegação rápida
-- [Principais recursos](#principais-recursos)
-- [Estrutura de pastas](#estrutura-de-pastas)
+- [Rodando em 2 minutos](#rodando-em-2-minutos)
+- [Credenciais de demo](#credenciais-de-demo)
+- [Onde está cada coisa](#onde-esta-cada-coisa)
 - [Requisitos](#requisitos)
-- [Como rodar localmente](#como-rodar-localmente)
-- [Notas sobre dados](#notas-sobre-dados)
-- [Customização rápida](#customizacao-rapida)
-- [Próximos passos sugeridos](#proximos-passos-sugeridos)
+- [Dados (trocar o mock pelo real)](#dados-trocar-o-mock-pelo-real)
+- [Personalização rápida](#personalizacao-rapida)
+- [Testes e CI](#testes-e-ci)
+
+## Rodando em 2 minutos <a id="rodando-em-2-minutos"></a>
+1) Abra o projeto na raiz (`Projeto 11 Futebol`).
+2) Instale os pacotes (se ainda não tiver):
+   - `install.packages(c("shiny","tidyverse","highcharter","ggplot2","reactable","lubridate","scales","fontawesome","readr","rmarkdown","knitr"))`
+3) Rode:
+   - `shiny::runApp()` (ou `shiny::runApp(".", launch.browser = TRUE)`)
+4) Entre com as credenciais de demo abaixo.
 
 ## Credenciais de demo <a id="credenciais-de-demo"></a>
 - Email: `demo@demo.com`
 - Senha: `654321`
-- Onde ajustar: `R/helpers_supabase.R`
+- Ajuste em: `R/helpers_supabase.R` (variáveis `.demo_email` e `.demo_senha`)
 
-## Principais recursos <a id="principais-recursos"></a>
-- Login com credenciais de demonstração (em `R/helpers_supabase.R`).
-- Dashboard com abas por clube e identidade visual por time (`R/mod_dashboard.R` + `R/mod_clube.R`).
-- KPIs e gráficos (Highcharter) com componentes reativos.
-- Área de vídeos para análise (placeholder).
-- Relatório HTML via RMarkdown com pré-visualização e download.
-- Estrutura modular, fácil de estender.
-- Assets em `www/` + CSS em `www/styles.css`.
-
-## Estrutura de pastas <a id="estrutura-de-pastas"></a>
-- `app.R`: ponto de entrada do Shiny (login + dashboard).
-- `R/mod_login.R`: UI/Server do login (valida credenciais demo).
-- `R/mod_dashboard.R`: navegação por times + relatório + ligação com `mod_clube`.
-- `R/mod_clube.R`: layout padrão por clube (KPIs, gráficos, vídeos e tabela mock).
-- `R/helpers_supabase.R`: credenciais + helper de autenticação demo.
-- `R/helpers_theme.R`: tema `ggplot2` minimal para futuros gráficos.
-- `data/base_rh.csv`: base fictícia usada como mock (substitua por base de futebol).
-- `www/`: escudos, imagens e `styles.css`.
+## Onde está cada coisa <a id="onde-esta-cada-coisa"></a>
+- `app.R`: liga o app e alterna entre login e dashboard.
+- `R/mod_login.R`: tela + lógica do login.
+- `R/mod_dashboard.R`: abas dos clubes, leitura do CSV mock e geração do relatório.
+- `R/mod_clube.R`: “template” de cada clube (KPIs, gráficos, vídeos e tabela).
+- `R/helpers_supabase.R`: autenticação de demo (não é Supabase de verdade, é só um helper).
+- `R/helpers_theme.R`: tema do `ggplot2` (uso futuro).
+- `data/base_rh.csv`: dados de exemplo só para não deixar o app vazio.
+- `www/`: escudos/imagens e o CSS em `www/styles.css`.
 
 ## Requisitos <a id="requisitos"></a>
 - R instalado
 - Pacotes: `shiny`, `tidyverse`, `highcharter`, `ggplot2`, `reactable`, `lubridate`, `scales`, `fontawesome`, `readr`, `rmarkdown`, `knitr`
 
-## Como rodar localmente <a id="como-rodar-localmente"></a>
-1) Abra o projeto na raiz (`Projeto 11 Futebol`).
-2) No R/RStudio, instale os pacotes necessários. Exemplo:
-   - `install.packages(c("shiny","tidyverse","highcharter","reactable","lubridate","scales","fontawesome","rmarkdown"))`
-3) Rode o app:
-   - `shiny::runApp()` (ou `shiny::runApp(".", launch.browser = TRUE)`)
-4) Faça login com `demo@demo.com` e senha `654321`.
+## Dados (trocar o mock pelo real) <a id="dados-trocar-o-mock-pelo-real"></a>
+- Hoje o app lê `data/base_rh.csv` em `R/mod_dashboard.R` só para alimentar os componentes.
+- O “relatório” também usa métricas fictícias (xG, finalizações, posse, PPDA etc.) para preencher campos e tabela.
+- Quando você trouxer sua base de futebol, o caminho mais direto é:
+  - trocar a leitura em `R/mod_dashboard.R`;
+  - filtrar por clube dentro de `mod_clube_server()` (em `R/mod_clube.R`).
 
-## Notas sobre dados <a id="notas-sobre-dados"></a>
-- Os módulos de clube usam o placeholder `data/base_rh.csv` só para manter o layout estável (não é dado real de futebol).
-- O relatório custom usa um data frame interno com métricas fictícias (xG, finalizações, posse, PPDA etc.) para preencher tabela e campos selecionáveis.
-- Para ligar dados reais, ajuste a leitura em `R/mod_dashboard.R` e aplique filtros por clube dentro de `mod_clube_server()`.
+## Personalização rápida <a id="personalizacao-rapida"></a>
+- Logos/cores: mexa em `www/` e em `www/styles.css`.
+- KPIs reais: substitua os placeholders em `R/mod_clube.R` por métricas do seu dataset.
+- Login: se não quiser credencial fixa, `R/helpers_supabase.R` é o ponto de corte.
+- Fonte/estilo: o app usa Google Fonts no `app.R` (se estiver offline, pode cair para fonte padrão).
 
-## Customização rápida <a id="customizacao-rapida"></a>
-- Credenciais demo: edite `.demo_email` e `.demo_senha` em `R/helpers_supabase.R`.
-- Logos/cores: substitua imagens em `www/` e ajuste `www/styles.css` (ou `tags$style` nos módulos).
-- KPIs reais: troque os placeholders em `R/mod_clube.R` por métricas do seu dataset (por rodada, por jogo etc.).
-- Relatório: o template é montado em tempo de execução em `R/mod_dashboard.R`; personalize o HTML/CSS do RMarkdown conforme precisar.
+## Testes e CI <a id="testes-e-ci"></a>
+- Testes: `tests/testthat/` (runner em `tests/testthat.R`)
+- CI: GitHub Actions roda em `push` e `pull_request`
 
-## Próximos passos sugeridos <a id="proximos-passos-sugeridos"></a>
-- Conectar uma base real de partidas e filtrar `dados` por clube.
-- Revisar KPIs e gráficos para refletir estatísticas de jogo (xG, finalizações, posse, PPDA).
-- Incluir controles de período/campeonato e filtros por posição ou atleta.
+### Rodando os testes localmente
+1) `install.packages("testthat")`
+2) `Rscript -f tests/testthat.R` (ou `testthat::test_dir("tests/testthat")`)
 
-## Qualidade (testes e CI)
-Pra dar mais segurança nos refactors e na evolução do app, o repo já vem com testes automatizados e CI.
-
-- Testes ficam em: `tests/testthat/`
-- Arquivo runner: `tests/testthat.R`
-- CI: GitHub Actions roda os testes em `push` e `pull_request`.
-
-### Como rodar os testes localmente
-Se quiser rodar os testes na sua máquina:
-
-1) Instale o pacote de testes:
-   - `install.packages("testthat")`
-2) Rode na raiz do projeto:
-   - `Rscript -f tests/testthat.R`
-   - (alternativa) `testthat::test_dir("tests/testthat")`
-
-## Boas práticas já adotadas
-- Estrutura modular com `R/mod_*.R` (UI/Server separados por domínio).
-- Helpers em `R/helpers_*.R` para reaproveitar código e facilitar testes.
-- `www/` para assets e `data/` para dados mock.
-
-## Sugestões de evolução
-- Travar versões de pacotes com `renv` (commitar o `renv.lock`).
-- Tirar credenciais hardcoded e usar `.Renviron`/Secrets no deploy.
-- Padronizar estilo com `styler` (formatação) + `lintr` (lint) no CI.
-- Aumentar cobertura de testes nas regras de negócio (KPIs reais, filtros e validações).
+## Ideias que fazem sentido depois
+- Conectar uma base real de partidas e fazer os filtros por clube/rodada/campeonato.
+- Ajustar os KPIs/gráficos para o que você realmente quer acompanhar.
+- Tirar credenciais hardcoded (usar `.Renviron`/Secrets) quando for fazer deploy.
