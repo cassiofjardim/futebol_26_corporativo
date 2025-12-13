@@ -1,6 +1,6 @@
 # Dashboard de Futebol (Shiny)
 
-Aplicação Shiny com tela de login e um painel multi-times inspirado em um “vestiário de dados” de futebol. O projeto está pronto para ser conectado a uma base real de partidas, mas usa uma base fictícia (RH) como placeholder apenas para validar layout, navegação e geração de relatórios.
+App em Shiny com tela de login e um painel multi-times, no clima de um “vestiário de dados” do futebol. Ele já está estruturado para receber uma base real de partidas, mas por enquanto roda com uma base fictícia (RH) só para validar layout, navegação e geração de relatórios.
 
 ## Navegação rápida
 - [Principais recursos](#principais-recursos)
@@ -14,7 +14,7 @@ Aplicação Shiny com tela de login e um painel multi-times inspirado em um “v
 ## Credenciais de demo <a id="credenciais-de-demo"></a>
 - Email: `demo@demo.com`
 - Senha: `654321`
-- Onde fica: `R/helpers_supabase.R`
+- Onde ajustar: `R/helpers_supabase.R`
 
 ## Principais recursos <a id="principais-recursos"></a>
 - Login com credenciais de demonstração (em `R/helpers_supabase.R`).
@@ -22,7 +22,7 @@ Aplicação Shiny com tela de login e um painel multi-times inspirado em um “v
 - KPIs e gráficos (Highcharter) com componentes reativos.
 - Área de vídeos para análise (placeholder).
 - Relatório HTML via RMarkdown com pré-visualização e download.
-- Estrutura modular fácil de estender.
+- Estrutura modular, fácil de estender.
 - Assets em `www/` + CSS em `www/styles.css`.
 
 ## Estrutura de pastas <a id="estrutura-de-pastas"></a>
@@ -41,22 +41,22 @@ Aplicação Shiny com tela de login e um painel multi-times inspirado em um “v
 
 ## Como rodar localmente <a id="como-rodar-localmente"></a>
 1) Abra o projeto na raiz (`Projeto 11 Futebol`).
-2) No R/RStudio, instale os pacotes necessários, por exemplo:
+2) No R/RStudio, instale os pacotes necessários. Exemplo:
    - `install.packages(c("shiny","tidyverse","highcharter","reactable","lubridate","scales","fontawesome","rmarkdown"))`
-3) Execute o app:
+3) Rode o app:
    - `shiny::runApp()` (ou `shiny::runApp(".", launch.browser = TRUE)`)
 4) Faça login com `demo@demo.com` e senha `654321`.
 
 ## Notas sobre dados <a id="notas-sobre-dados"></a>
-- Os módulos de clube usam o placeholder `data/base_rh.csv` apenas para manter o layout estável (não é dado real de futebol).
-- O relatório custom utiliza um data frame interno com métricas fictícias (xG, finalizações, posse, PPDA etc.) para preencher tabela e campos selecionáveis.
-- Para plugar dados reais, troque a leitura em `R/mod_dashboard.R` e aplique filtros por clube dentro de `mod_clube_server()`.
+- Os módulos de clube usam o placeholder `data/base_rh.csv` só para manter o layout estável (não é dado real de futebol).
+- O relatório custom usa um data frame interno com métricas fictícias (xG, finalizações, posse, PPDA etc.) para preencher tabela e campos selecionáveis.
+- Para ligar dados reais, ajuste a leitura em `R/mod_dashboard.R` e aplique filtros por clube dentro de `mod_clube_server()`.
 
 ## Customização rápida <a id="customizacao-rapida"></a>
 - Credenciais demo: edite `.demo_email` e `.demo_senha` em `R/helpers_supabase.R`.
 - Logos/cores: substitua imagens em `www/` e ajuste `www/styles.css` (ou `tags$style` nos módulos).
 - KPIs reais: troque os placeholders em `R/mod_clube.R` por métricas do seu dataset (por rodada, por jogo etc.).
-- Relatório: o template é montado em tempo de execução em `R/mod_dashboard.R`; personalize o HTML/CSS do RMarkdown conforme necessário.
+- Relatório: o template é montado em tempo de execução em `R/mod_dashboard.R`; personalize o HTML/CSS do RMarkdown conforme precisar.
 
 ## Próximos passos sugeridos <a id="proximos-passos-sugeridos"></a>
 - Conectar uma base real de partidas e filtrar `dados` por clube.
@@ -64,13 +64,15 @@ Aplicação Shiny com tela de login e um painel multi-times inspirado em um “v
 - Incluir controles de período/campeonato e filtros por posição ou atleta.
 
 ## Qualidade (testes e CI)
-Este repositório inclui testes automatizados e CI para dar mais segurança em refactors e evolução do app.
+Pra dar mais segurança nos refactors e na evolução do app, o repo já vem com testes automatizados e CI.
 
-- Testes: `tests/testthat/`
-- Runner: `tests/testthat.R`
-- CI: GitHub Actions executa os testes em `push` e `pull_request`.
+- Testes ficam em: `tests/testthat/`
+- Arquivo runner: `tests/testthat.R`
+- CI: GitHub Actions roda os testes em `push` e `pull_request`.
 
 ### Como rodar os testes localmente
+Se quiser rodar os testes na sua máquina:
+
 1) Instale o pacote de testes:
    - `install.packages("testthat")`
 2) Rode na raiz do projeto:
@@ -79,11 +81,11 @@ Este repositório inclui testes automatizados e CI para dar mais segurança em r
 
 ## Boas práticas já adotadas
 - Estrutura modular com `R/mod_*.R` (UI/Server separados por domínio).
-- Separação de helpers (`R/helpers_*.R`) para reutilização e testes.
-- Organização de `www/` e dados mock em `data/`.
+- Helpers em `R/helpers_*.R` para reaproveitar código e facilitar testes.
+- `www/` para assets e `data/` para dados mock.
 
 ## Sugestões de evolução
-- Reprodutibilidade de pacotes com `renv` (commit do `renv.lock`).
-- Remover credenciais hardcoded e usar `.Renviron`/Secrets no deploy.
-- Padronização: `styler` (formatação) + `lintr` (lint) no CI.
-- Aumentar cobertura de testes para regras de negócio (KPIs reais, filtros e validações).
+- Travar versões de pacotes com `renv` (commitar o `renv.lock`).
+- Tirar credenciais hardcoded e usar `.Renviron`/Secrets no deploy.
+- Padronizar estilo com `styler` (formatação) + `lintr` (lint) no CI.
+- Aumentar cobertura de testes nas regras de negócio (KPIs reais, filtros e validações).
