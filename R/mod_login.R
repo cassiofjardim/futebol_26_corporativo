@@ -133,7 +133,7 @@ mod_login_ui <- function(id) {
                   class = "login-logo",
                   alt   = "Futebol Analytics"
                 ),
-                span(class = "login-logo-text", "Futebol Pro Access")
+                span(class = "login-logo-text", "Futebol Pro Access (\"Beta\")")
               ),
               div(class = "login-tag", icon("shield"), "Ambiente Demo")
             ),
